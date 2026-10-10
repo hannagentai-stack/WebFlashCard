@@ -9,6 +9,9 @@
     "build": "node bundle-maker.js",
     "test": "node tests/e2e/run-all-e2e.js"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "keywords": [
     "flashcard",
     "srs",

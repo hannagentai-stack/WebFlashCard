@@ -169,10 +169,11 @@ app.use((err, req, res, next) => {
 // Start listener when executed directly
 const isDirectRun = process.argv[1] && path.resolve(process.argv[1]) === __filename;
 if (isDirectRun) {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
+  const PORT = Number(process.env.PORT) || 3000;
+  const HOST = '0.0.0.0';
+  app.listen(PORT, HOST, () => {
     console.log(`\n======================================================`);
-    console.log(` WebFlashCard đang chạy tại: http://localhost:${PORT}`);
+    console.log(` WebFlashCard đang chạy tại: http://${HOST}:${PORT}`);
     console.log(` Nhấn Ctrl+C để dừng server.`);
     console.log(`======================================================\n`);
   });

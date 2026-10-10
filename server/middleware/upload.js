@@ -2,7 +2,7 @@ import multer from 'multer';
 import path from 'node:path';
 import fs from 'node:fs';
 
-const UPLOADS_ROOT = path.resolve('uploads');
+const UPLOADS_ROOT = process.env.UPLOAD_DIR ? path.resolve(process.env.UPLOAD_DIR) : path.resolve('uploads');
 const ALLOWED_EXTENSIONS = new Set(['.txt', '.md', '.csv', '.xlsx', '.docx', '.pdf']);
 
 export function sanitizeFilename(filename) {
