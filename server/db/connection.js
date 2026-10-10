@@ -30,10 +30,12 @@ export function getDb(customPath) {
   if (targetPath !== ':memory:') {
     const dir = path.dirname(targetPath);
     if (!fs.existsSync(dir)) {
+      console.log('[Database] Creating database directory:', dir);
       fs.mkdirSync(dir, { recursive: true });
     }
   }
 
+  console.log('[Database] Opening SQLite database file at:', targetPath);
   const db = new Database(targetPath);
 
   // Configure SQLite Pragmas

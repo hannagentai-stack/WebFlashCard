@@ -1,3 +1,5 @@
+console.log('[Entry] Starting WebFlashCard server process. PID:', process.pid, 'Node:', process.version);
+
 /**
  * Unified Express Server for WebFlashCard
  * Serves REST API endpoints (/api/*) and static frontend assets.
@@ -53,7 +55,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Initialize database connection on server bootstrap
-getDb();
+try {
+  console.log('[Database] Initializing SQLite connection...');
+  const db = getDb();
+  const ver = db.prepare('SELECT sqlite_version() AS v').get();
+  console.log('[Database] SQLite connected successfully, SQLite version:', ver?.v);
+} catch (dbErr) {
+  console.error('[Database Error] Failed to initialize SQLite database:', dbErr);
+}
 
 // Public API Routes
 app.use('/api/auth', authRouter);
@@ -171,6 +180,7 @@ const isDirectRun = process.argv[1] && path.resolve(process.argv[1]) === __filen
 if (isDirectRun) {
   const PORT = Number(process.env.PORT) || 3000;
   const HOST = '0.0.0.0';
+  console.log(`[Server] Binding listener to http://${HOST}:${PORT}...`);
   app.listen(PORT, HOST, () => {
     console.log(`\n======================================================`);
     console.log(` WebFlashCard đang chạy tại: http://${HOST}:${PORT}`);
