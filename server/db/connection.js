@@ -37,10 +37,14 @@ export function getDb(customPath) {
   const db = new Database(targetPath);
 
   // Configure SQLite Pragmas
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
-  db.pragma('synchronous = NORMAL');
-  db.pragma('busy_timeout = 5000');
+  try {
+    db.pragma('journal_mode = WAL');
+  } catch {
+    try { db.pragma('journal_mode = DELETE'); } catch {}
+  }
+  try { db.pragma('foreign_keys = ON'); } catch {}
+  try { db.pragma('synchronous = NORMAL'); } catch {}
+  try { db.pragma('busy_timeout = 5000'); } catch {}
 
   // Initialize all tables and indexes
   initSchema(db);

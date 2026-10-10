@@ -1,8 +1,8 @@
-FROM node:20-slim AS builder
+FROM node:20-bookworm-slim
 
 WORKDIR /app
 
-# Install native build dependencies for better-sqlite3
+# Install native build tools for better-sqlite3
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     make \
@@ -10,21 +10,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm ci
+
+# Install and rebuild better-sqlite3 directly from source on Debian
+RUN npm install && npm rebuild better-sqlite3 --build-from-source
 
 COPY . .
+
 RUN node bundle-maker.js
 
-FROM node:20-slim
-
-WORKDIR /app
-
-# Runtime dependencies
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=10000
 
-COPY --from=builder /app /app
-
-EXPOSE 3000
+EXPOSE 10000
 
 CMD ["node", "server.js"]
