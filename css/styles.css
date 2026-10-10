@@ -1,0 +1,860 @@
+/* ==========================================================================
+   WebFlashCard - Stylesheet
+   Mobile-First, Focus Mode, Dual Language Themes (Tiếng Trung pastel hồng & Tiếng Anh xanh da trời)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Themes
+   -------------------------------------------------------------------------- */
+:root {
+  --font-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-cjk: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-target: var(--font-base);
+
+  /* Touch accessibility */
+  --touch-min: 44px;
+
+  /* Default / English Theme (#F5FBFF / #38BDF8 / #1E3A4A) */
+  --bg-primary: #F5FBFF;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #E0F2FE;
+  --bg-card: #ffffff;
+
+  --color-primary: #38BDF8;
+  --color-primary-hover: #0284C7;
+  --color-primary-light: #E0F2FE;
+
+  --text-primary: #1E3A4A;
+  --text-secondary: #335368;
+  --text-muted: #648498;
+
+  --border-color: #E0F2FE;
+  --border-focus: #38BDF8;
+
+  --radius-card: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Feedback Colors & Icons */
+  --color-success: #10B981;
+  --color-success-light: #ECFDF5;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FFFBEB;
+  --color-danger: #EF4444;
+  --color-danger-light: #FEF2F2;
+  --color-info: #0284C7;
+  --color-info-light: #F0F9FF;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 10px 25px -5px rgba(56, 189, 248, 0.12), 0 8px 10px -6px rgba(56, 189, 248, 0.08);
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 🇨🇳 Chinese Theme (#FFF7FA / #F472B6 / #3B2A33 / 20px radius) */
+[data-theme="zh"], body[data-lang="zh"], .theme-zh {
+  --bg-primary: #FFF7FA;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #FCE7F3;
+  --bg-card: #ffffff;
+
+  --color-primary: #F472B6;
+  --color-primary-hover: #EC4899;
+  --color-primary-light: #FCE7F3;
+
+  --text-primary: #3B2A33;
+  --text-secondary: #5C4754;
+  --text-muted: #8E7582;
+
+  --border-color: #FCE7F3;
+  --border-focus: #F472B6;
+
+  --radius-card: 20px;
+  --font-target: var(--font-cjk);
+  --shadow-card: 0 10px 25px -5px rgba(244, 114, 182, 0.12), 0 8px 10px -6px rgba(244, 114, 182, 0.08);
+}
+
+/* 🇬🇧 English Theme (#F5FBFF / #38BDF8 / #1E3A4A / 16px radius) */
+[data-theme="en"], body[data-lang="en"], .theme-en {
+  --bg-primary: #F5FBFF;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #E0F2FE;
+  --bg-card: #ffffff;
+
+  --color-primary: #38BDF8;
+  --color-primary-hover: #0284C7;
+  --color-primary-light: #E0F2FE;
+
+  --text-primary: #1E3A4A;
+  --text-secondary: #335368;
+  --text-muted: #648498;
+
+  --border-color: #E0F2FE;
+  --border-focus: #38BDF8;
+
+  --radius-card: 16px;
+  --font-target: var(--font-base);
+  --shadow-card: 0 10px 25px -5px rgba(56, 189, 248, 0.12), 0 8px 10px -6px rgba(56, 189, 248, 0.08);
+}
+
+/* Optional Dark Theme Support */
+[data-theme="dark"] {
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --bg-card: #1E293B;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+
+  --border-color: #334155;
+  --border-focus: #38BDF8;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Typography
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: var(--font-base);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  touch-action: manipulation;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+.font-cjk {
+  font-family: var(--font-cjk);
+  letter-spacing: 0.05em;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Touch target sizing */
+button, .btn, .nav-view-btn, .lang-tab, .rating-btn, .quiz-option-btn {
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  touch-action: pan-y manipulation;
+}
+
+/* Safe areas */
+.safe-pad-top {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+.safe-pad-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* --------------------------------------------------------------------------
+   3. Bố Cục Mobile-First (Bottom Nav trên điện thoại, Sidebar trên desktop)
+   -------------------------------------------------------------------------- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 1rem calc(4.5rem + env(safe-area-inset-bottom));
+}
+
+/* Bottom Navigation trên Mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(3.8rem + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 80;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.nav-view-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  gap: 0.2rem;
+  transition: color var(--transition-fast);
+}
+
+.nav-view-btn .nav-icon {
+  font-size: 1.25rem;
+}
+
+.nav-view-btn.active {
+  color: var(--color-primary);
+}
+
+/* Mobile Viewport Nav (<768px) */
+@media (max-width: 767px) {
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Desktop Sidebar Transformation (>=768px) */
+@media (min-width: 768px) {
+  .app-container {
+    flex-direction: row;
+  }
+
+  .bottom-nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    padding-bottom: 0;
+    border-top: none;
+    border-right: 1px solid var(--border-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 2rem;
+    gap: 0.5rem;
+  }
+
+  .nav-view-btn {
+    flex: initial;
+    width: 90%;
+    height: 48px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    gap: 0.75rem;
+  }
+
+  .nav-view-btn.active {
+    background: var(--color-primary-light);
+  }
+
+  .main-content {
+    padding: 2rem 2.5rem;
+  }
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 0.75rem;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--color-primary);
+}
+
+.lang-switcher {
+  display: flex;
+  background: var(--bg-tertiary);
+  padding: 3px;
+  border-radius: var(--radius-full);
+}
+
+.lang-tab {
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all var(--transition-fast);
+}
+
+.lang-tab.active {
+  background: var(--bg-secondary);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* In-App Daily Reminder Banner */
+.daily-reminder-banner {
+  background: var(--color-primary-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.reminder-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4. Thống Kê & 7-Day Activity Chart
+   -------------------------------------------------------------------------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* 7-Day Activity Chart */
+.stats-chart-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.stats-chart-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 120px;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.chart-bar {
+  width: 100%;
+  max-width: 28px;
+  min-height: 4px;
+  background: var(--color-primary);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-day {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   5. Chế Độ Học Tập Trung (Focus Mode)
+   -------------------------------------------------------------------------- */
+.focus-mode-active {
+  overflow: hidden !important;
+}
+
+.focus-mode-active .app-header,
+.focus-mode-active .bottom-nav,
+.focus-mode-active .top-bar,
+.focus-mode-active .daily-reminder-banner,
+.focus-mode-active .stats-grid,
+.focus-mode-active .stats-chart-wrapper,
+.focus-mode-active .deck-section {
+  display: none !important;
+}
+
+.focus-mode-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: max(0.75rem, env(safe-area-inset-top)) 1.25rem 0.5rem;
+  background: var(--bg-primary);
+  z-index: 100;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.focus-mode-active .focus-mode-header {
+  display: flex;
+}
+
+.focus-exit-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-exit-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Thin Progress Bar */
+.focus-progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  margin: 0 1rem;
+  overflow: hidden;
+}
+
+.focus-progress-fill, .progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+/* Khung Thẻ Flashcard 3D */
+.flashcard-stage {
+  perspective: 1200px;
+  max-width: 540px;
+  width: 100%;
+  margin: 2rem auto 1.5rem;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  min-height: 340px;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  touch-action: pan-y manipulation;
+}
+
+.flashcard-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* Swipe Gestures Animations */
+.card-swipe-left, .swipe-left {
+  transform: translateX(-120px) rotate(-15deg);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.card-swipe-right, .swipe-right {
+  transform: translateX(120px) rotate(15deg);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-face-front {
+  transform: rotateY(0deg);
+}
+
+.card-face-back {
+  transform: rotateY(180deg);
+}
+
+.card-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  text-align: center;
+  font-family: var(--font-target);
+  line-height: 1.2;
+}
+
+.card-title.font-cjk {
+  font-size: 3.25rem;
+}
+
+.card-phonetic {
+  text-align: center;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.card-meaning {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0.5rem 0 1rem;
+}
+
+/* 4 Large Thumb-Reach Rating Buttons */
+.rating-toolbar {
+  max-width: 540px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.rating-btn {
+  min-height: 52px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-weight: 700;
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast);
+}
+
+.rating-again { background: var(--color-danger-light); color: var(--color-danger); border-color: rgba(239, 68, 68, 0.2); }
+.rating-hard { background: var(--color-warning-light); color: var(--color-warning); border-color: rgba(245, 158, 11, 0.2); }
+.rating-good { background: var(--color-info-light); color: var(--color-info); border-color: rgba(2, 132, 199, 0.2); }
+.rating-easy { background: var(--color-success-light); color: var(--color-success); border-color: rgba(16, 185, 129, 0.2); }
+
+/* --------------------------------------------------------------------------
+   6. Trắc Nghiệm (Quiz) & Điền Từ (Typing)
+   -------------------------------------------------------------------------- */
+.quiz-options-grid {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.quiz-option-btn {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all var(--transition-fast);
+}
+
+.quiz-option-btn.is-correct {
+  background: var(--color-success-light) !important;
+  border-color: var(--color-success) !important;
+  color: var(--color-success) !important;
+}
+
+.quiz-option-btn.is-wrong {
+  background: var(--color-danger-light) !important;
+  border-color: var(--color-danger) !important;
+  color: var(--color-danger) !important;
+}
+
+.quiz-feedback {
+  min-height: 48px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Typing Mode & Keyboard Padding */
+.typing-container {
+  max-width: 540px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+  box-sizing: border-box;
+}
+
+.typing-input-box {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.typing-input-box:focus {
+  border-color: var(--border-focus);
+}
+
+/* --------------------------------------------------------------------------
+   7. Modals & File Upload Preview Table
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.modal-overlay.modal-active,
+.modal-overlay.modal-show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Auth / Modal Feedback Message Styling */
+.auth-error-msg,
+#login-error-msg,
+#register-error-msg,
+.feedback-wrong {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  color: #B91C1C;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color);
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-card);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-body {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  background: var(--bg-primary);
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: var(--text-secondary);
+}
+
+.form-control {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: var(--border-focus);
+}
+
+/* Upload Preview Table */
+.preview-table-wrapper {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin: 1rem 0;
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.preview-table th, .preview-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.preview-table th {
+  background: var(--bg-tertiary);
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8. Buttons & Utility Classes
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
+.text-muted { color: var(--text-muted); }

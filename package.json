@@ -1,0 +1,36 @@
+{
+  "name": "web-flash-card",
+  "version": "1.0.0",
+  "description": "Bilingual Flashcard Web App (English & Chinese) with SM-2 SRS",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node bundle-maker.js",
+    "test": "node tests/e2e/run-all-e2e.js"
+  },
+  "keywords": [
+    "flashcard",
+    "srs",
+    "sm2",
+    "english",
+    "chinese",
+    "vietnamese"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mammoth": "^1.13.0",
+    "multer": "^2.4.0",
+    "pdf-parse": "^2.4.5",
+    "pinyin-pro": "^3.29.5",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
+  }
+}
