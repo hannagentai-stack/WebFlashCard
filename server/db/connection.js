@@ -35,7 +35,7 @@ export function getDb(customPath) {
     }
   }
 
-  console.log('[Database] Opening SQLite database file at:', targetPath);
+  console.log('[Database] [Bước: đang mở DB] Opening SQLite database file at:', targetPath);
   const db = new Database(targetPath);
 
   // Configure SQLite Pragmas
@@ -49,7 +49,9 @@ export function getDb(customPath) {
   try { db.pragma('busy_timeout = 5000'); } catch {}
 
   // Initialize all tables and indexes
+  console.log('[Database] [Bước: đang tạo bảng] Initializing tables and schema...');
   initSchema(db);
+  console.log('[Database] [Bước: đã tạo bảng] Database schema initialized successfully.');
 
   dbInstance = db;
   currentDbPath = targetPath;

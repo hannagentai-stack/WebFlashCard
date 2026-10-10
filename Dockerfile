@@ -40,5 +40,5 @@ ENV PORT=10000
 
 EXPOSE 10000
 
-# 5. Tạm thời đổi CMD để kiểm tra container có start được không
-CMD ["node", "-e", "console.log('hello from container')"]
+# Bước 2: Tạm thời chạy script chẩn đoán cô lập module native
+CMD ["node", "scripts/diag.js"]

@@ -1,5 +1,14 @@
 console.log('[Entry] Starting WebFlashCard server process. PID:', process.pid, 'Node:', process.version);
 
+process.on('uncaughtException', (err) => {
+  console.error('[FATAL] Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[FATAL] Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 /**
  * Unified Express Server for WebFlashCard
  * Serves REST API endpoints (/api/*) and static frontend assets.
@@ -180,7 +189,7 @@ const isDirectRun = process.argv[1] && path.resolve(process.argv[1]) === __filen
 if (isDirectRun) {
   const PORT = Number(process.env.PORT) || 3000;
   const HOST = '0.0.0.0';
-  console.log(`[Server] Binding listener to http://${HOST}:${PORT}...`);
+  console.log(`[Server] [Bước: đang listen] Binding listener to http://${HOST}:${PORT}...`);
   app.listen(PORT, HOST, () => {
     console.log(`\n======================================================`);
     console.log(` WebFlashCard đang chạy tại: http://${HOST}:${PORT}`);
